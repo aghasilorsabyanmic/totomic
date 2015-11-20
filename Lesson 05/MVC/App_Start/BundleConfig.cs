@@ -26,12 +26,6 @@ namespace MVC
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
-#if DEBUG
-
-#elif RELEASE
-
-            BundleTable.EnableOptimizations = true;
-#endif
         }
     }
 }
