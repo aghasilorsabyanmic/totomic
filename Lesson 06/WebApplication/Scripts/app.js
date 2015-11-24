@@ -1,23 +1,46 @@
-﻿$(function () {
+﻿'use strict'
 
-    var baseUrl = location.origin + "/api/";
+var TotoMIC = {
 
-    var ajaxSettings = {
-        url: baseUrl + "peopleApi",
-        method: "GET"
-    };
+    settings: {
+        baseUrl: location.origin + "/api/"
+    },
 
-    $.ajax(ajaxSettings)
-        .done(getPersons);
+    buildUrl: function (action, id) {
+        return this.settings.baseUrl + action + "/" + (typeof id !== 'undefined' ? id : "");
+    },
 
-    var getPersons = function (data) {
-        console.log(data)
-        $.each(data, function (index, person) {
+    showPeople: function () {
+        var ajaxSettings = {
+            url: TotoMIC.buildUrl("peopleApi"),
+            method: "GET"
+        };
+
+        var deferred = $.ajax(ajaxSettings);
+
+        deferred.done(this.renderPeople);
+        deferred.fail(this.showError);
+    },
+
+    showError: function (jqXHR, textStatus, errorThrown) {
+        console.debug(textStatus);
+        console.debug(jqXHR);
+        console.debug(errorThrown);
+    },
+
+    renderPeople: function (people, textStatus, jqXHR) {
+        console.debug(textStatus);
+        console.debug(jqXHR);
+
+        $.each(people, function (index, person) {
             $("#people").append("<li>" + person.Name + "</li>")
         });
-    };
+    },
 
-    var deletePerson = function (person) {
-        console.log(person.Name + " was removed.")
-    };
-});
+    init: function () {
+        TotoMIC.showPeople();
+    },
+
+};
+
+$(TotoMIC.init);
