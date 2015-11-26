@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,9 +10,12 @@ namespace WebApplication.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public async  Task<ActionResult> Index()
         {
-            return View();
+            var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = await manager.FindByNameAsync(User.Identity.Name);
+
+            return View(user);
         }
 
         public ActionResult About()
