@@ -10,12 +10,9 @@ namespace WebApplication.Controllers
 {
     public class HomeController : Controller
     {
-        public async  Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var user = await manager.FindByNameAsync(User.Identity.Name);
-
-            return View(user);
+            return View();
         }
 
         public ActionResult About()
